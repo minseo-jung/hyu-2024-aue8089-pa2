@@ -20,9 +20,17 @@ def project_points(points_3d: np.ndarray,
     """
 
     # [TODO] get image coordinates
-
-
+    image_coords = (K @ points_3d.T).T  # (Nx3)
+    
+    image_coords[:, 0] /= image_coords[:, 2]  # u = u/z
+    image_coords[:, 1] /= image_coords[:, 2]  # v = v/z
+    
+    image_coords = image_coords[:, :2]  # (Nx2)
+    
     # [TODO] apply distortion
+    distorted_coords = distort_points(image_coords, D, K)
 
-
+    # Define projected_points (distorted_coords를 반환할 값으로 설정)
+    projected_points = distorted_coords
+    
     return projected_points
